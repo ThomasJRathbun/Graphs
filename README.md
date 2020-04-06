@@ -7,7 +7,8 @@
 	GraphSearch.h 	
 	GridGraph.cpp 	
 	GridGraph.h 	
-	Node.cpp 	
+	Node.cpp
+	Node.h
 	TopSort.cpp 	
 	TopSort.h 	
 	WeightedGraph.cpp 	
