@@ -3,7 +3,7 @@
 #include <iostream>
 #include "graph.h"
 #include <set>
-#include "node.h"
+#include "Node.h"
 #include <stdlib.h>
 #include <stack>
 #include <queue>
@@ -14,16 +14,15 @@ using namespace std;
 class GraphSearch
 {
 public:
-	graph g;
-	vector<node> DFSIterative(string, string);
-	vector<node> BFSIterative(string, string);
-	vector<node> DFSRec(node, node, vector<node>&,vector<node>);
-	vector<node> BFS(string, string);
-	vector<node> BFSRec(node, queue<node>&, vector<node>&);
-	vector<node> DFS(string, string);
-	vector<node> DFSIter(node, node);
-	vector<node> BFSIter(node, node);
-	GraphSearch();
-	~GraphSearch();
+	//Good Code
+	static vector<Node> DFSIter(Node* source, Node* destination);
+	static vector<Node> DFSRec(Node*, Node*);
+	static vector<Node> DFSRecUtil(Node* source, Node* destination, vector<Node>& visited, vector<Node> path);
+	static vector<Node> BFTIter(Graph);
+
+	//In Progress
+	static vector<Node> BFTRec(Graph);
+	static vector<Node> BFTRecUtil(Graph, vector<Node>);
+
 };
 
