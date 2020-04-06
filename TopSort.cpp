@@ -33,7 +33,6 @@ vector<Node> TopSort::Kahns(DirectedGraph g)
 	}
 	while (!q.empty()) {
 		Node* t = q.front();
-		cout << "TOP: " << t->getValue() << endl;
 		result.push_back(*t);
 
 		for (auto const& e : (t)->getEdgeList()) {
@@ -46,7 +45,6 @@ vector<Node> TopSort::Kahns(DirectedGraph g)
 				q.push(get<0>(e));
 
 		}
-		cout << "Pop: " << q.front()->getValue() << endl;
 		q.pop();
 	}
 

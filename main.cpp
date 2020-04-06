@@ -56,7 +56,6 @@ Graph createUnweightedLinkedList(int n) {
 	}
 
 	for (int i = 0; i < g.getListNodes().size() - 1; i++) {
-		cout << "i: " << i << endl;
 		g.addUndirectedEdge(g.getListNodes()[i], g.getListNodes()[i + 1]);
 	}
 
@@ -83,6 +82,16 @@ DirectedGraph createRandomDAGIter(int n) {
 		count++;
 	}
 	return g;
+}
+
+vector<Node> BFTRecLinkedList(Graph g) {
+	vector<Node> r = GraphSearch::BFTRec(g);
+	return r;
+}
+
+vector<Node> BFTIterLinkedList(Graph g) {
+	vector<Node> r = GraphSearch::BFTIter(g);
+	return r;
 }
 
 //Weighted Graph Algorithms
@@ -171,7 +180,6 @@ GridGraph createRandomGridGraph(int n) {
 	bool right = false;
 	int count = 0;
 	for (auto e : g.getListNodes()) {
-		cout << e->getValue() << endl;
 		do {
 			up = rand() % 2;
 			down = rand() % 2;
@@ -188,26 +196,18 @@ GridGraph createRandomGridGraph(int n) {
 		} while (!up && !down && !left && !right);
 		
 		if (up && e->getY() < n) {
-			cout << "up\n";
 			g.addUndirectedEdge(e, g.getListNodes()[count+n]);
 		}
 		if (down && e->getY() > 0) {
-			cout << "down\n";
 			g.addUndirectedEdge(e, g.getListNodes()[count - n]);
 		}
 		if (left && e->getX() > 0) {
-			cout << "left\n";
 			g.addUndirectedEdge(e, g.getListNodes()[count - 1]);
 		}
 		if (right && e->getX() < n) {
-			cout << "right\n";
 			g.addUndirectedEdge(e, g.getListNodes()[count + 1]);
 		}
-		
 
-		for (auto f : e->getEdgeList()) {
-			cout << "\t" << get<0>(f)->getValue() << endl;
-		}
 		count++;
 	}
 	return g;
@@ -256,127 +256,34 @@ vector<Node> astar(Node* source, Node* destination) {
 
 }
 
-int main() {
-	srand(time(NULL));
-
-	clock_t start;
-	clock_t end;
-	double elapsed_secs;
-
-	//Unweighted Graph
-	Graph g = createRandomUnweightedGraphIter(10);
-
-	//vector<Node> r = GraphSearch::DFSRec(g.getListNodes()[0], g.getListNodes()[9]);
-	vector<Node> r = GraphSearch::BFTIter(g);
-
-	cout << "GRAPH" << endl;
-	for (auto j : g.getListNodes()) {
-		cout << *j << endl;
-	}
-
-	cout << "PATH" << endl;
+void printResult(vector<Node> r) {
 	for (auto a : r) {
 		cout << a.getValue() << endl;
 	}
+}
+
+int main() {
+	srand(time(NULL));
+
+	//clock_t start;
+	//clock_t end;
+	//double elapsed_secs;
+	//start = clock();
+	//Code
+	//end = clock();
+	//double elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
+
+	//Unweighted Graph
+	Graph g = createUnweightedLinkedList(10000);
+	//printResult(BFTIterLinkedList(g));
+	//printResult(BFTRecLinkedList(g));
+
+	//DAG
+	DirectedGraph dg = createRandomDAGIter(1000);
+	//printResult(TopSort::Kahns(dg));
+	cout << "mDFS\n";
+	printResult(TopSort::mDFS(dg)); // I think this will always give a list in chronological order because of how I made my DAG. I will be rewriting my DAG generation code. 
 
 
-	/*
-	start = clock();
-	//search.g = createRandomUnweightedGraphIter(10);
-	//search.g = createRandomUnweightedGraphIter(100);
-	//search.g = createRandomUnweightedGraphIter(500);
-	//search.g = createRandomUnweightedGraphIter(1000);
-	//search.g = createRandomUnweightedGraphIter(5000);
-	//search.g = createRandomUnweightedGraphIter(10000);
-	end = clock();
-	double elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
-	cout << "TIME TO BUILD Graph: " << elapsed_secs << endl;
-	*/
-
-
-
-	//DirectedGraph
-	/*
-	DirectedGraph kGraph = createRandomDAGIter(1000);
-	DirectedGraph mGraph = createRandomDAGIter(1000);
-
-	//set<Node> a = kGraph.getAllNodes();
-	set<Node> b = mGraph.getAllNodes();
-
-	cout << "a " << kGraph.getListNodes().size() << endl;
-	for (int i = 0; i < kGraph.getListNodes().size(); i++) {
-		cout << kGraph.getListNodes()[i]->getValue() << endl;
-		cout << "SIZE: " << kGraph.getListNodes()[i]->getEdgeList().size() << endl;
-		for (auto a : kGraph.getListNodes()[i]->getEdgeList())
-			cout << "\t" << get<0>(a)->getValue() << endl;
-
-	}
-	cout << "PATH:\n";
-	vector<Node> path = TopSort::Kahns(kGraph);
-	for (auto e : path) {
-		cout << e.getValue() << endl;
-
-	}
-
-	
-
-	cout << "b " << mGraph.getListNodes().size() << endl;
-	for (int i = 0; i < mGraph.getListNodes().size(); i++) {
-		cout << mGraph.getListNodes()[i]->getValue() << endl;
-		cout << "SIZE: " << mGraph.getListNodes()[i]->getEdgeList().size() << endl;
-		for (auto a : mGraph.getListNodes()[i]->getEdgeList())
-			cout << "\t" << get<0>(a)->getValue() << endl;
-
-	}
-
-
-	cout << "PATH:\n";
-	vector<Node> path = TopSort::mDFS(mGraph);
-	for (auto e : path) {
-		cout << e.getValue() << endl;
-
-	}
-	*/
-
-
-	//WeightedGraph
-	/*
-	WeightedGraph w = createRandomCompleteWeightedGraph(1000);
-	
-	for (auto n : w.getListNodes()) {
-		cout << n->getValue() << endl;
-	}
-
-	for (int i = 0; i < w.getListNodes().size(); i++) {
-		cout << w.getListNodes()[i]->getValue() << endl;
-		cout << "SIZE: " << w.getListNodes()[i]->getEdgeList().size() << endl;
-		for (auto a : w.getListNodes()[i]->getEdgeList())
-			cout << "\t" << get<0>(a)->getValue() << " :: " << get<1>(a) << endl;
-	}
-
-	map<Node*,int> r = dijkstras(*(w.getListNodes()[0]));
-
-	cout << "FROM " << w.getListNodes()[0]->getValue() << endl;
-	for (auto k : w.getListNodes()) {
-		cout << "\t" << k->getValue() << " :: "<< r[k] << " " << endl;
-	}
-*/
-	/*
-	//GridGraph
-	GridGraph m = createRandomGridGraph(3);
-
-	for (auto n : m.getListNodes()) {
-		cout << *n << endl;
-	}
-
-
-	/*
-	vector<Node> r = astar(m.getListNodes()[0], m.getListNodes()[8]);
-
-	cout << "PATH\n";
-	for (auto j : r) {
-		cout << j.getValue() << endl;
-	}
-	*/
 	return 0;
 }
