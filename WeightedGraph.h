@@ -20,7 +20,6 @@ public:
 	void addNode(string);
 	void addWeightedEdge(Node*, Node*, int);
 	void removeWeightedEdge(Node*, Node*);
-	set<Node> getAllNodes();
 	vector<Node*> getListNodes();
 };
 

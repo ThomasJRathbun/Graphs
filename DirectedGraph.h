@@ -5,10 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include<set>
+#include "Graph.h"
 
 using namespace std;
 
-class DirectedGraph
+class DirectedGraph : public Graph
 {
 private:
 	vector<Node*> nodes;
@@ -20,6 +21,5 @@ public:
 	void addNode(string);
 	void addDirectedEdge(Node*, Node*);
 	void removeDirectedEdge(Node*, Node*);
-	set<Node> getAllNodes();
 	vector<Node*> getListNodes();
 };

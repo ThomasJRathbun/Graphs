@@ -20,7 +20,6 @@ public:
 	void addNode(string);
 	void addUndirectedEdge(Node*, Node*);
 	void removeUnidrectedEdge(Node*, Node*);
-	set<Node> getAllNodes();
 	vector<Node*> getListNodes();
 };
 

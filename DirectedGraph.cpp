@@ -27,13 +27,6 @@ void DirectedGraph::removeDirectedEdge(Node* first, Node* second)
 
 }
 
-set<Node> DirectedGraph::getAllNodes()
-{
-	set<Node> result;
-	for (auto const& n : nodes)
-		result.insert(*n);
-	return result;
-}
 
 vector<Node*> DirectedGraph::getListNodes()
 {

@@ -5,10 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include<set>
+#include "Graph.h"
 
 using namespace std;
 
-class GridGraph
+class GridGraph : public Graph
 {
 private:
 	vector<Node*> nodes;
@@ -20,7 +21,6 @@ public:
 	void addGridNode(int, int, string);
 	void addUndirectedEdge(Node*, Node*);
 	void removeUnidrectedEdge(Node*, Node*);
-	set<Node> getAllNodes();
 	vector<Node*> getListNodes();
 };
 

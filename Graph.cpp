@@ -27,13 +27,6 @@ void Graph::removeUnidrectedEdge(Node* first, Node* second)
 	second->removeEdge(first);
 }
 
-set<Node> Graph::getAllNodes()
-{
-	set<Node> result;
-	for (auto const& n : nodes)
-		result.insert(*n);
-	return result;
-}
 
 vector<Node*>  Graph::getListNodes() {
 	return nodes;

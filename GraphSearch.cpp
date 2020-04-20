@@ -42,12 +42,7 @@ vector<Node> GraphSearch::DFSRecUtil(Node* source, Node* destination, vector<Nod
 			continue;
 		}
 	}
-	if (!newPath.empty())
-	{
-		return newPath;
-	}
-	else
-		return empty;
+	return newPath;
 }
 
 vector<Node> GraphSearch::DFSIter(Node* source, Node* destination)

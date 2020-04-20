@@ -13,8 +13,13 @@ class Node
 private:
 	string value;
 	vector <tuple<Node*, int>> edgeList;
+	
+	//GridNode
 	int x;
 	int y;
+	int g = 2147483600;
+	int h;
+	Node* parent;
 
 public:
 	Node(string);
@@ -29,6 +34,13 @@ public:
 	string getValue();
 	int  getX();
 	int getY();
+	int getG();
+	int getH();
+	int getF();
+	void setH(int);
+	void setG(int);
+	void setParent(Node*);
+	Node* getParent();
 	tuple<int, int> getCoord();
 
 

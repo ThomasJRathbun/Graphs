@@ -29,14 +29,6 @@ void GridGraph::removeUnidrectedEdge(Node* first, Node* second)
 	second->removeEdge(first);
 }
 
-set<Node> GridGraph::getAllNodes()
-{
-	set<Node> result;
-	for (auto const& n : nodes)
-		result.insert(*n);
-	return result;
-}
-
 vector<Node*> GridGraph::getListNodes() {
 	return nodes;
 }

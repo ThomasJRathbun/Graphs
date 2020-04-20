@@ -63,6 +63,38 @@ int Node::getY()
 	return y;
 }
 
+int Node::getH()
+{
+	return h;
+}
+int Node::getG()
+{
+	return g;
+}
+
+void Node::setG(int n)
+{
+	g = n;
+}
+
+void Node::setH(int n)
+{
+	h = n;
+}
+int Node::getF()
+{
+	return h + g;
+}
+
+void Node::setParent(Node* p)
+{
+	parent = p;
+}
+
+Node* Node::getParent()
+{
+	return parent;
+}
 tuple<int,int> Node::getCoord()
 {
 	return tuple<int, int>(x, y);

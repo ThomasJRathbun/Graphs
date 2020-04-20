@@ -84,12 +84,14 @@ DirectedGraph createRandomDAGIter(int n) {
 	return g;
 }
 
-vector<Node> BFTRecLinkedList(Graph g) {
+vector<Node> BFTRecLinkedList() {
+	Graph g = createUnweightedLinkedList(1000);
 	vector<Node> r = GraphSearch::BFTRec(g);
 	return r;
 }
 
-vector<Node> BFTIterLinkedList(Graph g) {
+vector<Node> BFTIterLinkedList() {
+	Graph g = createUnweightedLinkedList(1000);
 	vector<Node> r = GraphSearch::BFTIter(g);
 	return r;
 }
@@ -216,44 +218,63 @@ GridGraph createRandomGridGraph(int n) {
 double euclideanDistance(Node* source, Node* destination) {
 	return sqrt( pow(destination->getX() - source->getX(),2) + pow(destination->getY() - source->getY(),2));
 }
-auto cmpD = [](tuple<Node*, int, double> left, tuple<Node*, int, double>  right) {return (get<1>(left)+get<2>(left)) > (get<1>(right) + get<2>(right)); };
 
-vector<Node> astar(Node* source, Node* destination) {
-	map<Node*, tuple<int, double>> h;
-	vector<Node> result;
-	priority_queue<tuple<Node*, int, double>, vector<tuple<Node*, int,double>>, decltype(cmpD)> q(cmpD);
+double manhattanDistance(Node* source, Node* destination) {
+	return abs(source->getX() - destination->getX()) + abs(source->getY() - destination->getY());
+}
+
+
+auto cmpD = [](Node* left, Node* right) {
+	if (left->getF() == right->getF())
+		return (left->getH() > right->getH()); 
+	else 
+		return (left->getF() > right->getF());
+};
+
+vector<Node*> astar(Node* source, Node* destination) {
+	priority_queue<Node*, vector<Node*>, decltype(cmpD)> q(cmpD);
 	vector<Node*> closed;
 
-	for (auto n : source->getEdgeList()) {
-		h.insert(make_pair(get<0>(n), tuple<int, double>(INT_MAX, euclideanDistance(get<0>(n), destination))));
-	}
-	
-	h[source] = make_tuple(0, euclideanDistance(source, destination));
+
 	Node* curr = source;
-	q.push(make_tuple(curr, get<0>(h[curr]), get<1>(h[curr])));
+	source->setParent(NULL);
+	curr->setG(0);
+	curr->setH(manhattanDistance(curr, destination));
+	q.push(curr); //Node, Cost, Heuristic
+
 	while (!q.empty()) {
-		curr = get<0>(q.top());
+		curr = q.top();
 		closed.push_back(curr);
 		q.pop();
 		if (curr == destination) {
 			break;//backtrack
 		}
-		for (auto n : curr->getEdgeList()) {
-			
-			q.push(make_tuple(get<0>(n),get<0>(h[get<0>(n)]), get<1>(h[get<0>(n)])));
-		}
 		for (auto e : curr->getEdgeList()) {
-			int temp_dist = get<0>(h[curr]) + 1;
-			if (temp_dist < get<0>(h[get<0>(e)])) {
-				get<0>(h[get<0>(e)]) = temp_dist;
+			if (find(closed.begin(), closed.end(), get<0>(e)) != closed.end()) {
+				continue;
+			}
+			get<0>(e)->setH(manhattanDistance(get<0>(e), destination));
+			int cost = curr->getG() + 1;
+
+			if (cost + get<0>(e)->getH() < get<0>(e)->getF()) {
+				get<0>(e)->setG(cost);
+				get<0>(e)->setParent(curr);
+
+				q.push(get<0>(e));
 			}
 		}
-		curr = get<0>(q.top());
-		q.pop();
-	}
-	cout << "RES\n";
-	return result;
 
+	}
+
+	vector<Node*> result;
+	Node* c = destination;
+	while (c) {
+		result.push_back(c);
+		c = c->getParent();
+	}
+
+	reverse(result.begin(), result.end());
+	return result;
 }
 
 void printResult(vector<Node> r) {
@@ -264,6 +285,20 @@ void printResult(vector<Node> r) {
 
 int main() {
 	srand(time(NULL));
+	GridGraph test = createRandomGridGraph(10);
+
+	vector<Node*> res = astar(test.getListNodes()[0], test.getListNodes()[99]);
+
+	cout << "GRAPH\n";
+	for (auto x : test.getListNodes()) {
+		cout << *x << endl;
+	}
+
+	cout << "RESULT\n";
+	for (auto x : res) {
+		cout << *x << endl;
+	}
+
 
 	//clock_t start;
 	//clock_t end;
@@ -274,15 +309,15 @@ int main() {
 	//double elapsed_secs = double(end - start) / CLOCKS_PER_SEC;
 
 	//Unweighted Graph
-	Graph g = createUnweightedLinkedList(10000);
+	//Graph g = createUnweightedLinkedList(10000);
 	//printResult(BFTIterLinkedList(g));
 	//printResult(BFTRecLinkedList(g));
 
 	//DAG
-	DirectedGraph dg = createRandomDAGIter(1000);
+	//DirectedGraph dg = createRandomDAGIter(1000);
 	//printResult(TopSort::Kahns(dg));
-	cout << "mDFS\n";
-	printResult(TopSort::mDFS(dg)); // I think this will always give a list in chronological order because of how I made my DAG. I will be rewriting my DAG generation code. 
+	//cout << "mDFS\n";
+	//printResult(TopSort::mDFS(dg)); // I think this will always give a list in chronological order because of how I made my DAG. I will be rewriting my DAG generation code. 
 
 
 	return 0;

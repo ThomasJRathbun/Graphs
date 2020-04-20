@@ -26,14 +26,6 @@ void WeightedGraph::removeWeightedEdge(Node* first, Node* second)
 	first->removeEdge(second);
 }
 
-set<Node> WeightedGraph::getAllNodes()
-{
-	set<Node> result;
-	for (auto const& n : nodes)
-		result.insert(*n);
-	return result;
-}
-
 vector<Node*> WeightedGraph::getListNodes()
 {
 	return nodes;

@@ -5,14 +5,13 @@ using namespace std;
 map<Node,int> TopSort::inDegree(DirectedGraph g)
 {
 	map<Node,int> in;
-	for (auto n : g.getAllNodes()) {
-		in.insert(make_pair<Node,int>(Node(n.getValue()), 0));
-		//cout << n.getValue() << " :: " << in[n] << endl;
+	for (auto n : g.getListNodes()) {
+		in.insert(make_pair<Node,int>(Node(n->getValue()), 0));
 	}
 
-	for (auto n : g.getAllNodes()) {
+	for (auto n : g.getListNodes()) {
 		//cout << n.getValue() << ": \n";
-		for (auto  e : n.getEdgeList()) {
+		for (auto  e : n->getEdgeList()) {
 			//cout << "\t" << get<0>(e).getValue() << " :: " << in[get<0>(e)] << endl;
 			in[*get<0>(e)]++;
 		}
@@ -37,10 +36,9 @@ vector<Node> TopSort::Kahns(DirectedGraph g)
 
 		for (auto const& e : (t)->getEdgeList()) {
 			nDegree[*get<0>(e)] -= 1;
-		}
-		nDegree[*t] = -1;
+	
+			nDegree[*t] = -1;
 
-		for (auto const& e : (t)->getEdgeList()) {
 			if (nDegree[*get<0>(e)] == 0)
 				q.push(get<0>(e));
 
